@@ -1,0 +1,15 @@
+image,method,features,metric,green_dx,green_dy,red_dx,red_dy,alignment_seconds
+cathedral.jpg,pyramid,intensity,ncc,2,5,3,12,0.071
+church.tif,pyramid,intensity,ncc,4,25,-5,58,0.4083
+emir.tif,pyramid,intensity,ncc,24,49,-216,147,0.4312
+harvesters.tif,pyramid,intensity,ncc,16,59,13,124,0.4632
+icon.tif,pyramid,intensity,ncc,17,40,23,89,0.4651
+ilemselga.tif,pyramid,intensity,ncc,7,39,11,129,0.5116
+melons.tif,pyramid,intensity,ncc,10,82,14,178,0.528
+monastery.jpg,pyramid,intensity,ncc,2,-3,2,3,0.0907
+religous_painting.tif,pyramid,intensity,ncc,3,28,7,68,0.4785
+self_portrait.tif,pyramid,intensity,ncc,29,79,36,176,0.5113
+siren.tif,pyramid,intensity,ncc,-6,49,-24,96,0.5098
+three_generations.tif,pyramid,intensity,ncc,14,53,11,111,0.5441
+tobolsk.jpg,pyramid,intensity,ncc,3,3,3,6,0.1445
+wharf.tif,pyramid,intensity,ncc,-7,15,-17,82,0.5402

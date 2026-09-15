@@ -1,0 +1,4 @@
+image,method,features,metric,green_dx,green_dy,red_dx,red_dy,alignment_seconds
+oredezh_river.tif,pyramid,intensity,ncc,-1,39,-7,151,0.4553
+suna_river.tif,pyramid,intensity,ncc,-5,25,-11,102,0.4749
+uzvarian_fortress.tif,pyramid,intensity,ncc,3,35,4,98,0.4838

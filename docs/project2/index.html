@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><title>Project 2: Fun with Filters and Frequencies · Haichao Li</title><meta content="CS180 Project 2: convolution, edge detection, sharpening, hybrid images and multiresolution blending." name="description"/><link href="../project1/styles.css" rel="stylesheet"/><link href="style.css" rel="stylesheet"/><link href="../favicon.svg" rel="icon"/></head><body id="top"><main><nav aria-label="Project navigation"><a href="../">All projects</a><a href="#p11">1.1 Convolution</a><a href="#p12">1.2 Edges</a><a href="#p13">1.3 DoG</a><a href="#p21">2.1 Sharpening</a><a href="#p22">2.2 Hybrids</a><a href="#p23">2.3 Stacks</a><a href="#p24">2.4 Blending</a></nav>
+<h1>Project 2: Fun with Filters and Frequencies</h1>
+<p class="byline">Haichao Li · CS180 · Fall 2026</p>
+<section id="p11"><h2>1.1 Convolutions from Scratch</h2>
+
+<p>Convolve my grayscale lake photograph (384 × 512, values in [0, 1]) with a 9 × 9 box filter, D<sub>x</sub> = [1, 0, −1], and D<sub>y</sub> = D<sub>x</sub><sup>T</sup>. The box filter is <code>np.ones((9, 9)) / 81</code>.</p>
+
+<div class="grid four"><figure><a href="assets/part1_1_original.jpg"><img alt="Original grayscale photograph" height="512" loading="lazy" src="assets/part1_1_original.jpg" width="384"/></a><figcaption>Original grayscale image</figcaption></figure>
+<figure><a href="assets/part1_1_box.jpg"><img alt="9 × 9 box average" height="512" loading="lazy" src="assets/part1_1_box.jpg" width="384"/></a><figcaption>9 × 9 box average</figcaption></figure>
+<figure><a href="assets/part1_1_dx.jpg"><img alt="Horizontal derivative" height="512" loading="lazy" src="assets/part1_1_dx.jpg" width="384"/></a><figcaption>Horizontal derivative</figcaption></figure>
+<figure><a href="assets/part1_1_dy.jpg"><img alt="Vertical derivative" height="512" loading="lazy" src="assets/part1_1_dy.jpg" width="384"/></a><figcaption>Vertical derivative</figcaption></figure>
+</div>
+
+<p>Both implementations flip the filter and use zero padding for an output the same size as the input. Four loops skip out-of-bounds samples; two loops pad explicitly and sum each window with NumPy. Zero padding darkens the blurred image border and creates boundary responses in the derivatives.</p>
+
+<h3>Four loops and two loops</h3>
+<div class="codegrid"><pre><code>def convolve(image, filter):
+    n, m = image.shape
+    fn, fm = filter.shape
+    res = np.zeros((n, m), dtype=float)
+    filter = filter[::-1, ::-1]
+    for i in range(n):
+        for j in range(m):
+            out = 0
+            for fi in range(fn):
+                for fj in range(fm):
+                    imagei = i + fi - fn // 2
+                    imagej = j + fj - fm // 2
+                    if 0 &lt;= imagei &lt; n and 0 &lt;= imagej &lt; m:
+                        out += image[imagei, imagej] * filter[fi, fj]
+            res[i, j] = out
+    return res</code></pre>
+<pre><code>def convolve_two_loops(image, filter):
+    n, m = image.shape
+    fn, fm = filter.shape
+    padded = np.pad(image, ((fn // 2, (fn - 1) // 2), (fm // 2, (fm - 1) // 2)))
+    filter = filter[::-1, ::-1]
+    res = np.zeros((n, m), dtype=float)
+    for i in range(n):
+        for j in range(m):
+            res[i, j] = np.sum(padded[i:i + fn, j:j + fm] * filter)
+    return res</code></pre>
+</div>
+
+<h3>Comparison with SciPy</h3>
+<p>One local run using the same image, 9 × 9 box filter, and zero-filled boundaries:</p>
+
+<table><thead><tr><th>Method</th><th>Time</th><th>Maximum absolute error vs. SciPy</th></tr></thead><tbody>
+<tr><td>Four Python loops</td><td>2.7980 s</td><td>1.89e-15</td></tr>
+<tr><td>Two loops + NumPy window sum</td><td>0.3170 s</td><td>1.44e-15</td></tr>
+<tr><td><code>scipy.signal.convolve2d</code></td><td>0.0137 s</td><td>Reference</td></tr></tbody></table>
+
+<p>NumPy window sums reduce Python overhead; SciPy is fastest. All outputs match up to floating-point summation error, including the boundaries.</p>
+</section>
+<section id="p12"><h2>1.2 Finite Difference Operator</h2>
+
+<p>Convolve the normalized cameraman image with D<sub>x</sub> and D<sub>y</sub>. Use <code>mode="same"</code> and symmetric boundaries to preserve dimensions without introducing a black border.</p>
+
+<div class="grid"><figure><a href="assets/cameraman.png"><img alt="Cameraman input" height="534" loading="lazy" src="assets/cameraman.png" width="534"/></a><figcaption>Cameraman input</figcaption></figure>
+<figure><a href="assets/part1_2_dx.jpg"><img alt="Iₓ · signed horizontal derivative" height="534" loading="lazy" src="assets/part1_2_dx.jpg" width="534"/></a><figcaption>Horizontal derivative Iₓ</figcaption></figure>
+<figure><a href="assets/part1_2_dy.jpg"><img alt="Iᵧ · signed vertical derivative" height="534" loading="lazy" src="assets/part1_2_dy.jpg" width="534"/></a><figcaption>Vertical derivative Iᵧ</figcaption></figure>
+</div>
+
+<div class="formula">M = √(I<sub>x</sub>² + I<sub>y</sub>²)    E(x, y) = 1 if M(x, y) &gt; 0.15, otherwise 0</div>
+
+<div class="grid two"><figure><a href="assets/part1_2_gradient_magnitude.jpg"><img alt="Gradient magnitude" height="534" loading="lazy" src="assets/part1_2_gradient_magnitude.jpg" width="534"/></a><figcaption>Gradient magnitude</figcaption></figure>
+<figure><a href="assets/part1_2_edges.png"><img alt="Binary edges · threshold 0.15" height="534" loading="lazy" src="assets/part1_2_edges.png" width="534"/></a><figcaption>Binary edges · threshold 0.15</figcaption></figure>
+</div>
+
+<p>Threshold 0.15 keeps the person and tripod edges while removing much of the weaker grass texture. Lower thresholds retain more noise; higher thresholds lose faint contours. Some grass remains.</p>
+
+<p class="note">Signed derivatives show zero as gray. Gradient magnitudes in 1.2 and 1.3 share the display range [0, √2]; thresholds apply before display scaling.</p>
+</section>
+<section id="p13"><h2>1.3 Derivative of Gaussian</h2>
+
+<p>Build a normalized 9 × 9 Gaussian (σ = 1.5) with <code>g = cv2.getGaussianKernel(9, 1.5)</code> and <code>G = g @ g.T</code>. Blur, then differentiate. Use threshold 0.06 for the weaker smoothed gradients.</p>
+
+<div class="grid"><figure><a href="assets/part1_3_blurred.jpg"><img alt="Gaussian-smoothed input" height="534" loading="lazy" src="assets/part1_3_blurred.jpg" width="534"/></a><figcaption>Gaussian-smoothed input</figcaption></figure>
+<figure><a href="assets/part1_3_gradient_magnitude.jpg"><img alt="Smoothed gradient magnitude" height="534" loading="lazy" src="assets/part1_3_gradient_magnitude.jpg" width="534"/></a><figcaption>Smoothed gradient magnitude</figcaption></figure>
+<figure><a href="assets/part1_3_edges.png"><img alt="Binary edges · threshold 0.06" height="534" loading="lazy" src="assets/part1_3_edges.png" width="534"/></a><figcaption>Binary edges · threshold 0.06</figcaption></figure>
+</div>
+
+<div class="formula">(I ∗ G) ∗ D = I ∗ (G ∗ D)</div>
+
+<p>Full convolution of G with D<sub>x</sub> and D<sub>y</sub> gives 9 × 11 and 11 × 9 DoG filters. Applying these directly to the original matches blur-then-differentiate: both derivative arrays pass <code>np.allclose</code>.</p>
+
+<div class="grid two"><figure class="kernel"><a href="assets/part1_3_dog_x.png"><img alt="Horizontal DoG kernel · zero is gray" height="9" loading="lazy" src="assets/part1_3_dog_x.png" width="11"/></a><figcaption>DoG x · zero is gray</figcaption></figure>
+<figure class="kernel"><a href="assets/part1_3_dog_y.png"><img alt="Vertical DoG kernel · zero is gray" height="11" loading="lazy" src="assets/part1_3_dog_y.png" width="9"/></a><figcaption>DoG y · zero is gray</figcaption></figure>
+</div>
+
+<p>Compared with 1.2, smoothing suppresses grass texture and produces cleaner major contours, with wider edges and less fine detail.</p>
+</section>
+<section id="p21"><h2>2.1 Image Sharpening</h2>
+<p>Gaussian blur retains low frequencies. Subtract it from the original to isolate high frequencies, then add a scaled residual to strengthen edges:</p>
+<div class="formula">H = I − G ∗ I<br/>S = I + αH = [(1 + α)δ − αG] ∗ I</div>
+<p>Apply the single kernel [(1 + α)δ − αG] to each color channel using σ = 1.5 and an 11 × 11 Gaussian. Clip the final display to [0, 1].</p>
+<h3>Taj Mahal</h3>
+<div class="grid"><figure><a href="assets/part2_1_taj_original.jpg"><img alt="Original" height="300" loading="lazy" src="assets/part2_1_taj_original.jpg" width="300"/></a><figcaption>Original</figcaption></figure>
+<figure><a href="assets/part2_1_taj_blurred.jpg"><img alt="Gaussian low frequencies" height="300" loading="lazy" src="assets/part2_1_taj_blurred.jpg" width="300"/></a><figcaption>Blurred</figcaption></figure>
+<figure><a href="assets/part2_1_taj_high.jpg"><img alt="High frequencies · zero is gray" height="300" loading="lazy" src="assets/part2_1_taj_high.jpg" width="300"/></a><figcaption>High frequencies</figcaption></figure>
+</div>
+<div class="grid"><figure><a href="assets/part2_1_taj_sharp_0.5.jpg"><img alt="α = 0.5 · subtle enhancement" height="300" loading="lazy" src="assets/part2_1_taj_sharp_0.5.jpg" width="300"/></a><figcaption>α = 0.5</figcaption></figure>
+<figure><a href="assets/part2_1_taj_sharp_1.jpg"><img alt="α = 1 · moderate enhancement" height="300" loading="lazy" src="assets/part2_1_taj_sharp_1.jpg" width="300"/></a><figcaption>α = 1</figcaption></figure>
+<figure><a href="assets/part2_1_taj_sharp_2.jpg"><img alt="α = 2 · stronger enhancement" height="300" loading="lazy" src="assets/part2_1_taj_sharp_2.jpg" width="300"/></a><figcaption>α = 2</figcaption></figure>
+</div>
+<h3>My lake photograph</h3>
+<div class="grid"><figure><a href="assets/part2_1_lake_original.jpg"><img alt="Original" height="512" loading="lazy" src="assets/part2_1_lake_original.jpg" width="384"/></a><figcaption>Original</figcaption></figure>
+<figure><a href="assets/part2_1_lake_blurred.jpg"><img alt="Gaussian low frequencies" height="512" loading="lazy" src="assets/part2_1_lake_blurred.jpg" width="384"/></a><figcaption>Blurred</figcaption></figure>
+<figure><a href="assets/part2_1_lake_high.jpg"><img alt="High frequencies · zero is gray" height="512" loading="lazy" src="assets/part2_1_lake_high.jpg" width="384"/></a><figcaption>High frequencies</figcaption></figure>
+</div>
+<div class="grid"><figure><a href="assets/part2_1_lake_sharp_0.5.jpg"><img alt="α = 0.5 · subtle enhancement" height="512" loading="lazy" src="assets/part2_1_lake_sharp_0.5.jpg" width="384"/></a><figcaption>α = 0.5</figcaption></figure>
+<figure><a href="assets/part2_1_lake_sharp_1.jpg"><img alt="α = 1 · moderate enhancement" height="512" loading="lazy" src="assets/part2_1_lake_sharp_1.jpg" width="384"/></a><figcaption>α = 1</figcaption></figure>
+<figure><a href="assets/part2_1_lake_sharp_2.jpg"><img alt="α = 2 · stronger enhancement" height="512" loading="lazy" src="assets/part2_1_lake_sharp_2.jpg" width="384"/></a><figcaption>α = 2</figcaption></figure>
+</div>
+<p>Larger α strengthens architecture, branches, and mountain edges. At α = 2, halos and exaggerated texture become more visible.</p>
+<h3>Blur and resharpen</h3>
+<div class="grid"><figure><a href="assets/part2_1_lake_original.jpg"><img alt="Reference image" height="512" loading="lazy" src="assets/part2_1_lake_original.jpg" width="384"/></a><figcaption>Reference image</figcaption></figure>
+<figure><a href="assets/part2_1_evaluation_blurred.jpg"><img alt="Deliberately blurred · σ = 2" height="512" loading="lazy" src="assets/part2_1_evaluation_blurred.jpg" width="384"/></a><figcaption>Deliberately blurred · σ = 2</figcaption></figure>
+<figure><a href="assets/part2_1_evaluation_resharpened.jpg"><img alt="Resharpened · σ = 2, α = 1" height="512" loading="lazy" src="assets/part2_1_evaluation_resharpened.jpg" width="384"/></a><figcaption>Resharpened · σ = 2, α = 1</figcaption></figure>
+</div>
+<p>Resharpening restores some edge contrast, but branches and mountain texture remain softer than the original. It cannot recover detail lost to blur.</p>
+<p class="note">High-frequency images show zero as gray; filtering uses the original signed values.</p>
+</section>
+<section id="p22"><h2>2.2 Hybrid Images</h2>
+<p>Combine low frequencies from A with high frequencies from B. B dominates close up; A becomes clearer at a smaller size or greater viewing distance. All three results use grayscale.</p>
+<div class="formula">Hybrid = G<sub>σ low</sub> ∗ A + w[B − G<sub>σ high</sub> ∗ B]</div>
+<h3>Derek + Nutmeg</h3>
+<div class="grid two"><figure><a href="assets/part2_2_derek_nutmeg_original_low.jpg"><img alt="Original A · Derek" height="512" loading="lazy" src="assets/part2_2_derek_nutmeg_original_low.jpg" width="366"/></a><figcaption>Original A · Derek</figcaption></figure>
+<figure><a href="assets/part2_2_derek_nutmeg_original_high.jpg"><img alt="Original B · Nutmeg" height="384" loading="lazy" src="assets/part2_2_derek_nutmeg_original_high.jpg" width="512"/></a><figcaption>Original B · Nutmeg</figcaption></figure>
+</div>
+<p>Align two manually selected eye centers with translation, rotation, and uniform scaling. Each output is 512 × 512, with eyes at (200, 205) and (312, 205).</p>
+<div class="grid four"><figure><a href="assets/part2_2_derek_nutmeg_aligned_low.jpg"><img alt="Aligned Derek" height="512" loading="lazy" src="assets/part2_2_derek_nutmeg_aligned_low.jpg" width="512"/></a><figcaption>Aligned Derek</figcaption></figure>
+<figure><a href="assets/part2_2_derek_nutmeg_aligned_high.jpg"><img alt="Aligned Nutmeg" height="512" loading="lazy" src="assets/part2_2_derek_nutmeg_aligned_high.jpg" width="512"/></a><figcaption>Aligned Nutmeg</figcaption></figure>
+<figure><a href="assets/part2_2_derek_nutmeg_low.jpg"><img alt="Low-pass Derek · σ = 8" height="512" loading="lazy" src="assets/part2_2_derek_nutmeg_low.jpg" width="512"/></a><figcaption>Low-pass Derek · σ = 8</figcaption></figure>
+<figure><a href="assets/part2_2_derek_nutmeg_high.jpg"><img alt="High-pass Nutmeg · σ = 3" height="512" loading="lazy" src="assets/part2_2_derek_nutmeg_high.jpg" width="512"/></a><figcaption>High-pass Nutmeg · σ = 3</figcaption></figure>
+</div>
+<p>σ<sub>low</sub> = 8 removes Derek’s fine detail; σ<sub>high</sub> = 3 retains Nutmeg’s fur and whiskers. Weight 0.8 keeps the cat visible without overwhelming Derek. The Gaussian half-amplitude cutoffs are approximately 0.0234 and 0.0625 cycles/pixel (0.1874/σ).</p>
+<div class="grid two"><figure><a href="assets/part2_2_derek_nutmeg_hybrid.jpg"><img alt="Hybrid · inspect the fur and whiskers at this size" height="512" loading="lazy" src="assets/part2_2_derek_nutmeg_hybrid.jpg" width="512"/></a><figcaption>Hybrid</figcaption></figure>
+</div>
+<figure class="small-result"><img alt="Derek Nutmeg hybrid reduced to 64 pixels" height="64" src="assets/part2_2_derek_nutmeg_small.png" width="64"/><figcaption>Hybrid at 64 pixels</figcaption></figure>
+<h3>Frequency analysis</h3>
+<figure class="wide"><a href="assets/part2_2_fourier.jpg"><img alt="Log magnitude spectra: log(1 + |fftshift(fft2(image))|). All five panels share one display scale." height="416" loading="lazy" src="assets/part2_2_fourier.jpg" width="2145"/></a><figcaption>Log magnitude spectra: log(1 + |fftshift(fft2(image))|). All five panels share one display scale.</figcaption></figure>
+<p>Low-pass filtering concentrates energy near the center; high-pass filtering suppresses the center and retains outer frequencies. The hybrid combines both. Spectra use the signed arrays before display scaling or clipping.</p>
+<h3>Two custom hybrids</h3>
+<p>The next two pairs are my own photographs, aligned by the eyes using the same method.</p>
+<h3>Portrait A + Portrait B</h3>
+<div class="grid"><figure><a href="assets/part2_2_own_portraits_original_low.jpg"><img alt="Portrait A · low frequencies" height="342" loading="lazy" src="assets/part2_2_own_portraits_original_low.jpg" width="512"/></a><figcaption>Portrait A · low frequencies</figcaption></figure>
+<figure><a href="assets/part2_2_own_portraits_original_high.jpg"><img alt="Portrait B · high frequencies" height="512" loading="lazy" src="assets/part2_2_own_portraits_original_high.jpg" width="342"/></a><figcaption>Portrait B · high frequencies</figcaption></figure>
+<figure><a href="assets/part2_2_own_portraits_hybrid.jpg"><img alt="Portrait hybrid · inspect at full size" height="512" loading="lazy" src="assets/part2_2_own_portraits_hybrid.jpg" width="512"/></a><figcaption>Hybrid</figcaption></figure>
+</div>
+<figure class="small-result"><div><img alt="own portraits hybrid at 64 pixels" height="64" src="assets/part2_2_own_portraits_small.png" width="64"/></div>
+<figcaption>Hybrid at 64 pixels</figcaption></figure>
+<p>Portrait A supplies the broad face shape; B supplies hair, forehead, and mouth detail. A becomes clearer at the smaller size, but differing mouth shapes and head outlines leave double contours.</p>
+<h3>Portrait + puppy</h3>
+<div class="grid"><figure><a href="assets/part2_2_portrait_puppy_original_low.jpg"><img alt="Portrait · low frequencies" height="512" loading="lazy" src="assets/part2_2_portrait_puppy_original_low.jpg" width="342"/></a><figcaption>Portrait · low frequencies</figcaption></figure>
+<figure><a href="assets/part2_2_portrait_puppy_original_high.jpg"><img alt="Puppy · high frequencies" height="512" loading="lazy" src="assets/part2_2_portrait_puppy_original_high.jpg" width="342"/></a><figcaption>Puppy · high frequencies</figcaption></figure>
+<figure><a href="assets/part2_2_portrait_puppy_hybrid.jpg"><img alt="Portrait–puppy hybrid · inspect at full size" height="512" loading="lazy" src="assets/part2_2_portrait_puppy_hybrid.jpg" width="512"/></a><figcaption>Hybrid</figcaption></figure>
+</div>
+<figure class="small-result"><div><img alt="portrait puppy hybrid at 64 pixels" height="64" src="assets/part2_2_portrait_puppy_small.png" width="64"/></div>
+<figcaption>Hybrid at 64 pixels</figcaption></figure>
+<p>The portrait dominates at small size and puppy fur appears close up. The softer puppy image needs weight 1.8. This result is less successful: eye alignment leaves the muzzle and mouth mismatched.</p>
+<table><thead><tr><th>Hybrid</th><th>σ low</th><th>σ high</th><th>High-frequency weight</th></tr></thead><tbody><tr><td>Derek / Nutmeg</td><td>8</td><td>3</td><td>0.8</td></tr><tr><td>Portrait A / Portrait B</td><td>10</td><td>5</td><td>1</td></tr><tr><td>Portrait / puppy</td><td>12</td><td>4</td><td>1.8</td></tr></tbody></table>
+</section>
+<section id="p23"><h2>2.3 Gaussian and Laplacian Stacks</h2>
+<p>Build five levels without downsampling or built-in pyramid functions. Every apple and orange level remains 512 × 367.</p>
+<p>G₀ is the original. Blur each preceding level with incremental σ = 2, 4, 8, 16. Subtract adjacent Gaussian levels for the Laplacian bands; retain G₄ as the residual.</p>
+<div class="formula">Lᵢ = Gᵢ − Gᵢ₊₁   (i = 0…3)<br/>L₄ = G₄    ·    I = Σᵢ Lᵢ</div>
+<h3>Apple stacks</h3>
+<figure class="wide"><a href="assets/part2_3_apple_gaussian.jpg"><img alt="Gaussian levels G₀ through G₄." height="416" loading="lazy" src="assets/part2_3_apple_gaussian.jpg" width="2145"/></a><figcaption>Gaussian levels G₀ through G₄.</figcaption></figure>
+<figure class="wide"><a href="assets/part2_3_apple_laplacian.jpg"><img alt="Laplacian bands L₀ through L₃ and the residual L₄. Signed bands are individually rescaled around gray for visibility." height="416" loading="lazy" src="assets/part2_3_apple_laplacian.jpg" width="2145"/></a><figcaption>L₀–L₃ and residual L₄. Signed bands are rescaled around gray.</figcaption></figure>
+<h3>Orange stacks</h3>
+<figure class="wide"><a href="assets/part2_3_orange_gaussian.jpg"><img alt="Gaussian levels G₀ through G₄." height="416" loading="lazy" src="assets/part2_3_orange_gaussian.jpg" width="2145"/></a><figcaption>Gaussian levels G₀ through G₄.</figcaption></figure>
+<figure class="wide"><a href="assets/part2_3_orange_laplacian.jpg"><img alt="Laplacian bands L₀ through L₃ and the residual L₄. Signed bands are individually rescaled around gray for visibility." height="416" loading="lazy" src="assets/part2_3_orange_laplacian.jpg" width="2145"/></a><figcaption>L₀–L₃ and residual L₄. Signed bands are rescaled around gray.</figcaption></figure>
+<h3>Figure 3.42 (a)–(l)</h3>
+<p>Rows show levels 0, 2, and 4. Columns show the masked apple band, masked orange band, and their sum. The bottom row sums all five levels to reconstruct each contribution and the final oraple. Signed panels share a display scale within each row.</p>
+<figure class="wide"><a href="assets/part2_3_figure_3_42.jpg"><img alt="Weighted high-frequency, middle-frequency, and residual contributions, followed by reconstruction." height="1664" loading="lazy" src="assets/part2_3_figure_3_42.jpg" width="1286"/></a><figcaption>Masked bands and reconstruction.</figcaption></figure>
+<p>Summing all Laplacian bands and the residual reconstructs each original to floating-point precision.</p>
+</section>
+<section id="p24"><h2>2.4 Multiresolution Blending</h2>
+<p>White mask pixels select A; black pixels select B. Blur the mask at each stack level to make narrow transitions for fine detail and broad transitions for color and illumination.</p>
+<div class="formula">Lᵢ blend = Gᵢ mask · Lᵢ A + (1 − Gᵢ mask) · Lᵢ B<br/>Blend = Σᵢ Lᵢ blend</div>
+<p>Use the same five levels and σ values as 2.3 for both images and the mask. Blend each RGB channel independently.</p>
+<h3>Apple + orange</h3>
+<div class="grid"><figure><a href="assets/part2_4_oraple_a.jpg"><img alt="A · apple" height="367" loading="lazy" src="assets/part2_4_oraple_a.jpg" width="512"/></a><figcaption>A · apple</figcaption></figure>
+<figure><a href="assets/part2_4_oraple_b.jpg"><img alt="B · orange" height="367" loading="lazy" src="assets/part2_4_oraple_b.jpg" width="512"/></a><figcaption>B · orange</figcaption></figure>
+<figure><a href="assets/part2_4_oraple_mask.png"><img alt="Vertical step mask" height="367" loading="lazy" src="assets/part2_4_oraple_mask.png" width="512"/></a><figcaption>Vertical step mask</figcaption></figure>
+</div>
+<div class="grid two"><figure><a href="assets/part2_4_oraple_hard.jpg"><img alt="Direct cut" height="367" loading="lazy" src="assets/part2_4_oraple_hard.jpg" width="512"/></a><figcaption>Direct cut</figcaption></figure>
+<figure><a href="assets/part2_4_oraple_blend.jpg"><img alt="Multiresolution blend" height="367" loading="lazy" src="assets/part2_4_oraple_blend.jpg" width="512"/></a><figcaption>Multiresolution blend</figcaption></figure>
+</div>
+<p>The blend smooths the color jump while preserving surface texture. Small differences in the fruit outlines remain.</p>
+<h3>Sunset + lakeshore</h3>
+<div class="grid"><figure><a href="assets/part2_4_sunset_lake_original_a.jpg"><img alt="A · sunset clouds and distant mountains" height="266" loading="lazy" src="assets/part2_4_sunset_lake_original_a.jpg" width="512"/></a><figcaption>A · sunset</figcaption></figure>
+<figure><a href="assets/part2_4_sunset_lake_original_b.jpg"><img alt="B · a curved shoreline and calm water" height="342" loading="lazy" src="assets/part2_4_sunset_lake_original_b.jpg" width="512"/></a><figcaption>B · lakeshore</figcaption></figure>
+<figure><a href="assets/part2_4_sunset_lake_mask.png"><img alt="Curved mask · white selects A" height="342" loading="lazy" src="assets/part2_4_sunset_lake_mask.png" width="512"/></a><figcaption>Curved mask</figcaption></figure>
+</div>
+<div class="grid two"><figure><a href="assets/part2_4_sunset_lake_hard.jpg"><img alt="Direct cut · an abrupt water-color boundary" height="342" loading="lazy" src="assets/part2_4_sunset_lake_hard.jpg" width="512"/></a><figcaption>Direct cut</figcaption></figure>
+<figure><a href="assets/part2_4_sunset_lake_blend.jpg"><img alt="Multiresolution blend · a smoother water transition" height="342" loading="lazy" src="assets/part2_4_sunset_lake_blend.jpg" width="512"/></a><figcaption>Multiresolution blend</figcaption></figure>
+</div>
+<p>Shift A upward 20 pixels and place the curved seam in open water. The blend softens the color jump while retaining ripples and shoreline detail.</p>
+<h3>Coastal sky + waves</h3>
+<div class="grid"><figure><a href="assets/part2_4_coastal_sky_original_a.jpg"><img alt="A · a warm, overcast coastal sky" height="342" loading="lazy" src="assets/part2_4_coastal_sky_original_a.jpg" width="512"/></a><figcaption>A · coastal sky</figcaption></figure>
+<figure><a href="assets/part2_4_coastal_sky_original_b.jpg"><img alt="B · breaking waves and wet sand" height="399" loading="lazy" src="assets/part2_4_coastal_sky_original_b.jpg" width="512"/></a><figcaption>B · waves</figcaption></figure>
+<figure><a href="assets/part2_4_coastal_sky_mask.png"><img alt="Curved mask · white selects A" height="399" loading="lazy" src="assets/part2_4_coastal_sky_mask.png" width="512"/></a><figcaption>Curved mask</figcaption></figure>
+</div>
+<div class="grid two"><figure><a href="assets/part2_4_coastal_sky_hard.jpg"><img alt="Direct cut · the wave boundary is visible" height="399" loading="lazy" src="assets/part2_4_coastal_sky_hard.jpg" width="512"/></a><figcaption>Direct cut</figcaption></figure>
+<figure><a href="assets/part2_4_coastal_sky_blend.jpg"><img alt="Multiresolution blend · sky and waves join gradually" height="399" loading="lazy" src="assets/part2_4_coastal_sky_blend.jpg" width="512"/></a><figcaption>Multiresolution blend</figcaption></figure>
+</div>
+<p>Shift A downward 10 pixels to align the horizons. The curved seam preserves A’s sky and B’s waves; blending softens the interrupted wave at the join. Lighting differences remain visible.</p>
+<p>Both pairs are my own photographs. Resize to a maximum dimension of 512 pixels and place A on B’s canvas with replicated borders. Use <code>y &lt; c + 5 sin(2πx/W) + 3 sin(6πx/W)</code>: c = 194 for the lake (512 × 342), c = 216 for the beach (512 × 399).</p>
+<h3>Lake blend: masked Laplacian stacks</h3>
+<figure class="wide"><a href="assets/part2_4_custom_process.jpg"><img alt="Masked Laplacian contributions for the lake blend: levels 0, 2, and 4, then each reconstructed contribution and the final result." height="1664" loading="lazy" src="assets/part2_4_custom_process.jpg" width="1286"/></a><figcaption>Levels 0, 2, 4 and reconstruction: masked A, masked B, and their sum.</figcaption></figure>
+</section>
+<section id="takeaway"><h2>What I Learned</h2>
+<p>Different frequency bands need different treatment: sharpening strengthens fine detail, hybrids separate subjects by scale, and blending uses wider transitions for low frequencies. Sharpening also showed me that stronger edges cannot restore detail erased by blur.</p>
+</section>
+</main></body></html>

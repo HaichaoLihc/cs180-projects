@@ -1,0 +1,42 @@
+/* Shared typography and page width come from Project 1. */
+nav { display: flex; flex-wrap: wrap; gap: 6px 16px; }
+section { scroll-margin-top: 20px; }
+.grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px 18px; margin: 12px 0 18px; }
+.grid.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.grid.four { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+figure img { aspect-ratio: auto; }
+.grid img { max-height: 400px; object-fit: contain; }
+.wide { margin: 12px 0 18px; }
+.wide img { max-width: 840px; margin: 0 auto; }
+.kernel img { width: 180px; max-width: 100%; image-rendering: pixelated; }
+.small-result { margin: 12px 0 18px; }
+.small-result img { width: 64px; height: 64px; }
+.formula { font: 18px/1.5 Georgia, 'Times New Roman', serif; margin: 10px 0; overflow-wrap: anywhere; }
+pre { border: 1px solid #000; padding: 14px; overflow-x: auto; font-size: 13px; line-height: 1.45; }
+code { font-family: Consolas, Menlo, monospace; font-size: .9em; }
+pre code { font-size: inherit; }
+table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 14px; }
+th, td { padding: 8px 10px; text-align: left; border-bottom: 1px solid #000; }
+th:first-child, td:first-child { padding-left: 0; }
+@media screen and (max-width: 720px) {
+  .grid, .grid.four { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px 14px; }
+  .grid.two { grid-template-columns: 1fr; }
+  table { font-size: 12px; }
+  th, td { padding: 7px 5px; }
+}
+@media screen and (max-width: 440px) {
+  .grid, .grid.four { grid-template-columns: 1fr; }
+}
+@media print {
+  nav { display: none; }
+  .grid { gap: 12px; margin: 8px 0 12px; break-inside: avoid; }
+  .grid img { max-height: 66mm; }
+  .wide { margin: 8px 0 12px; break-inside: avoid; }
+  .wide img { max-height: 205mm; object-fit: contain; }
+  .kernel img { width: 32mm; }
+  .formula { font-size: 11pt; }
+  pre { font-size: 7.5pt; padding: 8px; white-space: pre-wrap; overflow-wrap: anywhere; break-inside: avoid; }
+  table { font-size: 8.5pt; break-inside: avoid; }
+  th, td { padding: 5px 7px; }
+  #takeaway { break-inside: avoid; }
+}

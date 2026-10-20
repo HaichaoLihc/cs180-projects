@@ -1,0 +1,423 @@
+{
+  "seed": 180,
+  "step_size": 0.02,
+  "cfg_w": 7,
+  "input_config_sha256": "ddf53255df073a73643bd691885d8cccf070a1a324e045ca5b5c0c8749af7dea",
+  "implementation": "part_a_v1",
+  "run_identity": {
+    "seed": 180,
+    "step_size": 0.02,
+    "cfg_w": 7,
+    "input_config_sha256": "ddf53255df073a73643bd691885d8cccf070a1a324e045ca5b5c0c8749af7dea",
+    "implementation": "part_a_v1"
+  },
+  "model": "MCG-NJU/PixNerd-XXL-P16-T2I",
+  "sample_seed_overrides": {},
+  "revision": "9fa8836b553976b88a3b27649ed1628499e02bf9",
+  "text_revision": "70d244cc86ccca08cf5af4e1e306ecf908b1ad5e",
+  "device": "mps:0",
+  "torch": "2.12.0",
+  "image_resolution": 512,
+  "hybrid_lowpass_sigma": 16,
+  "hybrid_lowpass_kernel": 265,
+  "prompt": "a high quality photo",
+  "starting_times": [
+    0.02,
+    0.04,
+    0.06,
+    0.1,
+    0.14,
+    0.25,
+    0.5
+  ],
+  "input_config": {
+    "own_image": "assets/own_puppy.jpg",
+    "test_images": {
+      "puppy": "assets/own_puppy.jpg",
+      "lake": "assets/own_lake_sunset.jpg"
+    },
+    "campanile": "assets/campanile.jpg",
+    "web_image": "assets/web_painting.jpg",
+    "drawings": {
+      "sailboat": "assets/hand_drawing_sailboat.png",
+      "teapot": "assets/hand_drawing_teapot.png"
+    },
+    "edit_prompts": {
+      "campanile": "a photograph of a lighthouse on a rocky coast under a clear blue sky",
+      "puppy": "a photograph of a golden retriever puppy wearing a red knitted scarf sitting in snow",
+      "lake": "a photograph of a snowy alpine lake at dawn, mountains reflected in the water"
+    },
+    "anagram_pairs": [
+      [
+        "an oil painting of an old man with a white beard",
+        "an oil painting of people sitting around a campfire"
+      ],
+      [
+        "a charcoal drawing of a mountain village",
+        "a charcoal drawing of a horse"
+      ]
+    ],
+    "hybrid_pairs": [
+      [
+        "a lithograph of a skull",
+        "a lithograph of a waterfall"
+      ],
+      [
+        "a black and white portrait of a cat",
+        "a black and white photograph of a forest"
+      ]
+    ],
+    "provenance": {
+      "own_puppy.jpg": "Copied from the user's Project 2 inputs/own_puppy.jpg; original image bytes preserved.",
+      "own_lake_sunset.jpg": "Copied from the user's Project 2 inputs/own_lake_sunset.jpg; original image bytes preserved.",
+      "campanile.jpg": "Course-provided input, extracted from official Part A starter.",
+      "web_painting.jpg": "Vincent van Gogh, Wheat Field with Cypresses (1889). The Metropolitan Museum of Art, public domain. https://www.metmuseum.org/art/collection/search/436535",
+      "hand_drawing_sailboat.png": "User hand drawing supplied on 2026-10-19. Exact original screenshot: assets/hand_drawings/sailboat_original.png. Centered on a square canvas using constant background padding only; all original drawing and grid pixels retained. The standard course preprocessing then resizes to 512 x 512.",
+      "hand_drawing_teapot.png": "User hand drawing supplied on 2026-10-19. Exact original screenshot: assets/hand_drawings/teapot_original.png. Centered on a square canvas using constant background padding only; all original drawing and grid pixels retained. The standard course preprocessing then resizes to 512 x 512."
+    }
+  },
+  "artifacts": {
+    "training_inputs": {
+      "filename": "training_inputs.png",
+      "section": "1.1",
+      "status": "complete",
+      "source": "/Users/haichaoli/Documents/Berkeley/CS180/proj3/assets/own_puppy.jpg",
+      "source_sha256": "6da049099285b9870cec44718653d3bc6f0f44c3662751c241494fdc3e08033a",
+      "seed": 180
+    },
+    "velocity_original": {
+      "filename": "velocity_original.png",
+      "section": "1.4",
+      "status": "complete",
+      "source": "/Users/haichaoli/Documents/Berkeley/CS180/proj3/assets/own_puppy.jpg",
+      "source_sha256": "6da049099285b9870cec44718653d3bc6f0f44c3662751c241494fdc3e08033a",
+      "seed": 180
+    },
+    "blur_0.25": {
+      "filename": "blur_0.25.png",
+      "section": "1.2",
+      "status": "complete",
+      "sigma": 16.0,
+      "mse": 0.015193822793662548,
+      "source": "/Users/haichaoli/Documents/Berkeley/CS180/proj3/assets/own_puppy.jpg",
+      "source_sha256": "6da049099285b9870cec44718653d3bc6f0f44c3662751c241494fdc3e08033a",
+      "seed": 180
+    },
+    "blur_0.50": {
+      "filename": "blur_0.50.png",
+      "section": "1.2",
+      "status": "complete",
+      "sigma": 8.0,
+      "mse": 0.005430154502391815,
+      "source": "/Users/haichaoli/Documents/Berkeley/CS180/proj3/assets/own_puppy.jpg",
+      "source_sha256": "6da049099285b9870cec44718653d3bc6f0f44c3662751c241494fdc3e08033a",
+      "seed": 180
+    },
+    "blur_0.75": {
+      "filename": "blur_0.75.png",
+      "section": "1.2",
+      "status": "complete",
+      "sigma": 4.0,
+      "mse": 0.0015743569238111377,
+      "source": "/Users/haichaoli/Documents/Berkeley/CS180/proj3/assets/own_puppy.jpg",
+      "source_sha256": "6da049099285b9870cec44718653d3bc6f0f44c3662751c241494fdc3e08033a",
+      "seed": 180
+    },
+    "edit_sailboat_0.02": {
+      "filename": "edit_sailboat_0.02.png",
+      "section": "3.1",
+      "status": "complete",
+      "start_time": 0.02,
+      "seed": 180,
+      "prompt": "a high quality photo",
+      "source": "assets/hand_drawing_sailboat.png",
+      "source_sha256": "2d119072948a8f324655e36fe91e3a4734ab4623d8ddea4de02897e40d6660d7",
+      "elapsed_seconds": 47.395524749998
+    },
+    "edit_sailboat_0.04": {
+      "filename": "edit_sailboat_0.04.png",
+      "section": "3.1",
+      "status": "complete",
+      "start_time": 0.04,
+      "seed": 180,
+      "prompt": "a high quality photo",
+      "source": "assets/hand_drawing_sailboat.png",
+      "source_sha256": "2d119072948a8f324655e36fe91e3a4734ab4623d8ddea4de02897e40d6660d7",
+      "elapsed_seconds": 39.93362408399116
+    },
+    "edit_sailboat_0.06": {
+      "filename": "edit_sailboat_0.06.png",
+      "section": "3.1",
+      "status": "complete",
+      "start_time": 0.06,
+      "seed": 180,
+      "prompt": "a high quality photo",
+      "source": "assets/hand_drawing_sailboat.png",
+      "source_sha256": "2d119072948a8f324655e36fe91e3a4734ab4623d8ddea4de02897e40d6660d7",
+      "elapsed_seconds": 39.03041658300208
+    },
+    "edit_sailboat_0.10": {
+      "filename": "edit_sailboat_0.10.png",
+      "section": "3.1",
+      "status": "complete",
+      "start_time": 0.1,
+      "seed": 180,
+      "prompt": "a high quality photo",
+      "source": "assets/hand_drawing_sailboat.png",
+      "source_sha256": "2d119072948a8f324655e36fe91e3a4734ab4623d8ddea4de02897e40d6660d7",
+      "elapsed_seconds": 37.29577916601556
+    },
+    "edit_sailboat_0.14": {
+      "filename": "edit_sailboat_0.14.png",
+      "section": "3.1",
+      "status": "complete",
+      "start_time": 0.14,
+      "seed": 180,
+      "prompt": "a high quality photo",
+      "source": "assets/hand_drawing_sailboat.png",
+      "source_sha256": "2d119072948a8f324655e36fe91e3a4734ab4623d8ddea4de02897e40d6660d7",
+      "elapsed_seconds": 35.86421766600688
+    },
+    "edit_sailboat_0.25": {
+      "filename": "edit_sailboat_0.25.png",
+      "section": "3.1",
+      "status": "complete",
+      "start_time": 0.25,
+      "seed": 180,
+      "prompt": "a high quality photo",
+      "source": "assets/hand_drawing_sailboat.png",
+      "source_sha256": "2d119072948a8f324655e36fe91e3a4734ab4623d8ddea4de02897e40d6660d7",
+      "elapsed_seconds": 31.680191374995047
+    },
+    "edit_sailboat_0.50": {
+      "filename": "edit_sailboat_0.50.png",
+      "section": "3.1",
+      "status": "complete",
+      "start_time": 0.5,
+      "seed": 180,
+      "prompt": "a high quality photo",
+      "source": "assets/hand_drawing_sailboat.png",
+      "source_sha256": "2d119072948a8f324655e36fe91e3a4734ab4623d8ddea4de02897e40d6660d7",
+      "elapsed_seconds": 21.440124041982926
+    },
+    "edit_sailboat": {
+      "filename": "edit_sailboat.png",
+      "section": "3.1",
+      "status": "complete",
+      "prompt": "a high quality photo",
+      "starting_times": [
+        0.02,
+        0.04,
+        0.06,
+        0.1,
+        0.14,
+        0.25,
+        0.5
+      ],
+      "expected_starting_times": [
+        0.02,
+        0.04,
+        0.06,
+        0.1,
+        0.14,
+        0.25,
+        0.5
+      ],
+      "sample_ids": [
+        "edit_sailboat_0.02",
+        "edit_sailboat_0.04",
+        "edit_sailboat_0.06",
+        "edit_sailboat_0.10",
+        "edit_sailboat_0.14",
+        "edit_sailboat_0.25",
+        "edit_sailboat_0.50"
+      ]
+    },
+    "edit_teapot_0.02": {
+      "filename": "edit_teapot_0.02.png",
+      "section": "3.1",
+      "status": "complete",
+      "start_time": 0.02,
+      "seed": 180,
+      "prompt": "a high quality photo",
+      "source": "assets/hand_drawing_teapot.png",
+      "source_sha256": "af5df2e309e29c1eae2d35bfa2778bc2069c1b5a95fb05f6f09244dca822a11a",
+      "elapsed_seconds": 42.79887791600777
+    },
+    "edit_teapot_0.04": {
+      "filename": "edit_teapot_0.04.png",
+      "section": "3.1",
+      "status": "complete",
+      "start_time": 0.04,
+      "seed": 180,
+      "prompt": "a high quality photo",
+      "source": "assets/hand_drawing_teapot.png",
+      "source_sha256": "af5df2e309e29c1eae2d35bfa2778bc2069c1b5a95fb05f6f09244dca822a11a",
+      "elapsed_seconds": 42.264538291987265
+    },
+    "edit_teapot_0.06": {
+      "filename": "edit_teapot_0.06.png",
+      "section": "3.1",
+      "status": "complete",
+      "start_time": 0.06,
+      "seed": 180,
+      "prompt": "a high quality photo",
+      "source": "assets/hand_drawing_teapot.png",
+      "source_sha256": "af5df2e309e29c1eae2d35bfa2778bc2069c1b5a95fb05f6f09244dca822a11a",
+      "elapsed_seconds": 41.2374176250014
+    },
+    "edit_teapot_0.10": {
+      "filename": "edit_teapot_0.10.png",
+      "section": "3.1",
+      "status": "complete",
+      "start_time": 0.1,
+      "seed": 180,
+      "prompt": "a high quality photo",
+      "source": "assets/hand_drawing_teapot.png",
+      "source_sha256": "af5df2e309e29c1eae2d35bfa2778bc2069c1b5a95fb05f6f09244dca822a11a",
+      "elapsed_seconds": 39.41864954199991
+    },
+    "edit_teapot_0.14": {
+      "filename": "edit_teapot_0.14.png",
+      "section": "3.1",
+      "status": "complete",
+      "start_time": 0.14,
+      "seed": 180,
+      "prompt": "a high quality photo",
+      "source": "assets/hand_drawing_teapot.png",
+      "source_sha256": "af5df2e309e29c1eae2d35bfa2778bc2069c1b5a95fb05f6f09244dca822a11a",
+      "elapsed_seconds": 37.533570083993254
+    },
+    "edit_teapot_0.25": {
+      "filename": "edit_teapot_0.25.png",
+      "section": "3.1",
+      "status": "complete",
+      "start_time": 0.25,
+      "seed": 180,
+      "prompt": "a high quality photo",
+      "source": "assets/hand_drawing_teapot.png",
+      "source_sha256": "af5df2e309e29c1eae2d35bfa2778bc2069c1b5a95fb05f6f09244dca822a11a",
+      "elapsed_seconds": 33.1766371249978
+    },
+    "edit_teapot_0.50": {
+      "filename": "edit_teapot_0.50.png",
+      "section": "3.1",
+      "status": "complete",
+      "start_time": 0.5,
+      "seed": 180,
+      "prompt": "a high quality photo",
+      "source": "assets/hand_drawing_teapot.png",
+      "source_sha256": "af5df2e309e29c1eae2d35bfa2778bc2069c1b5a95fb05f6f09244dca822a11a",
+      "elapsed_seconds": 21.744470374978846
+    },
+    "edit_teapot": {
+      "filename": "edit_teapot.png",
+      "section": "3.1",
+      "status": "complete",
+      "prompt": "a high quality photo",
+      "starting_times": [
+        0.02,
+        0.04,
+        0.06,
+        0.1,
+        0.14,
+        0.25,
+        0.5
+      ],
+      "expected_starting_times": [
+        0.02,
+        0.04,
+        0.06,
+        0.1,
+        0.14,
+        0.25,
+        0.5
+      ],
+      "sample_ids": [
+        "edit_teapot_0.02",
+        "edit_teapot_0.04",
+        "edit_teapot_0.06",
+        "edit_teapot_0.10",
+        "edit_teapot_0.14",
+        "edit_teapot_0.25",
+        "edit_teapot_0.50"
+      ]
+    }
+  },
+  "baseline_sigmas": {
+    "0.25": {
+      "sigma": 16.0,
+      "mse": 0.015193822793662548,
+      "candidate_mse": {
+        "1.0": 0.71484375,
+        "2.0": 0.18032681941986084,
+        "4.0": 0.04765649884939194,
+        "8.0": 0.01634816639125347,
+        "16.0": 0.015193822793662548
+      }
+    },
+    "0.50": {
+      "sigma": 8.0,
+      "mse": 0.005430154502391815,
+      "candidate_mse": {
+        "1.0": 0.07948037981987,
+        "2.0": 0.020246125757694244,
+        "4.0": 0.006163369864225388,
+        "8.0": 0.005430154502391815,
+        "16.0": 0.011944374069571495
+      }
+    },
+    "0.75": {
+      "sigma": 4.0,
+      "mse": 0.0015743569238111377,
+      "candidate_mse": {
+        "1.0": 0.008885547518730164,
+        "2.0": 0.002465073484927416,
+        "4.0": 0.0015743569238111377,
+        "8.0": 0.004219909198582172,
+        "16.0": 0.011517854407429695
+      }
+    }
+  },
+  "interpolation_endpoint_checks": true,
+  "euler_checks": "50 full steps, 25 half steps, shortened final step passed",
+  "rotation_involution_check": true,
+  "cfg_zero_check": true,
+  "model_loader": "net-only; official EMA weights; meta+mmap; Qwen not loaded",
+  "model_load_seconds": 4.942666874994757,
+  "cached_prompts": [
+    "",
+    "a black and white photograph of a forest",
+    "a black and white portrait of a cat",
+    "a charcoal drawing of a horse",
+    "a charcoal drawing of a mountain village",
+    "a high quality photo",
+    "a lithograph of a skull",
+    "a lithograph of a waterfall",
+    "a photograph of a golden retriever puppy wearing a red knitted scarf sitting in snow",
+    "a photograph of a lighthouse on a rocky coast under a clear blue sky",
+    "a photograph of a snowy alpine lake at dawn, mountains reflected in the water",
+    "an oil painting of an old man with a white beard",
+    "an oil painting of people sitting around a campfire"
+  ],
+  "text_encoder_released_after_encoding": true,
+  "execution_strategies": [
+    {
+      "started_unix": 1792466882.724076,
+      "max_network_batch": 2,
+      "precision": "float32",
+      "text_encoder_released": true,
+      "note": "Existing artifacts/checkpoints reused. Batch2 CFG changes only float32 reduction order; measured maximum forward difference 9.54e-6. Hybrid reuses identical null prediction."
+    }
+  ],
+  "completed_invocations": [
+    {
+      "group": "editing",
+      "only": [
+        "edit_sailboat",
+        "edit_teapot"
+      ],
+      "elapsed_seconds": 513.2891410000157
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "own_image": "assets/own_puppy.jpg",
+  "test_images": {
+    "puppy": "assets/own_puppy.jpg",
+    "lake": "assets/own_lake_sunset.jpg"
+  },
+  "campanile": "assets/campanile.jpg",
+  "web_image": "assets/web_painting.jpg",
+  "drawings": {
+    "sailboat": "assets/hand_drawing_sailboat.png",
+    "teapot": "assets/hand_drawing_teapot.png"
+  },
+  "edit_prompts": {
+    "campanile": "a photograph of a lighthouse on a rocky coast under a clear blue sky",
+    "puppy": "a photograph of a golden retriever puppy wearing a red knitted scarf sitting in snow",
+    "lake": "a photograph of a snowy alpine lake at dawn, mountains reflected in the water"
+  },
+  "anagram_pairs": [
+    [
+      "an oil painting of an old man with a white beard",
+      "an oil painting of people sitting around a campfire"
+    ],
+    [
+      "a charcoal drawing of a mountain village",
+      "a charcoal drawing of a horse"
+    ]
+  ],
+  "hybrid_pairs": [
+    [
+      "a lithograph of a skull",
+      "a lithograph of a waterfall"
+    ],
+    [
+      "a black and white portrait of a cat",
+      "a black and white photograph of a forest"
+    ]
+  ],
+  "provenance": {
+    "own_puppy.jpg": "Copied from the user's Project 2 inputs/own_puppy.jpg; original image bytes preserved.",
+    "own_lake_sunset.jpg": "Copied from the user's Project 2 inputs/own_lake_sunset.jpg; original image bytes preserved.",
+    "campanile.jpg": "Course-provided input, extracted from official Part A starter.",
+    "web_painting.jpg": "Vincent van Gogh, Wheat Field with Cypresses (1889). The Metropolitan Museum of Art, public domain. https://www.metmuseum.org/art/collection/search/436535",
+    "hand_drawing_sailboat.png": "User hand drawing supplied on 2026-10-19. Exact original screenshot: assets/hand_drawings/sailboat_original.png. Centered on a square canvas using constant background padding only; all original drawing and grid pixels retained. The standard course preprocessing then resizes to 512 x 512.",
+    "hand_drawing_teapot.png": "User hand drawing supplied on 2026-10-19. Exact original screenshot: assets/hand_drawings/teapot_original.png. Centered on a square canvas using constant background padding only; all original drawing and grid pixels retained. The standard course preprocessing then resizes to 512 x 512."
+  }
+}

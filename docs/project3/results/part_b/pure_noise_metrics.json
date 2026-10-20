@@ -1,0 +1,88 @@
+{
+  "group": "pure_noise",
+  "status": "completed",
+  "mode": "full",
+  "config": {
+    "mode": "full",
+    "seed": 180,
+    "denoise_epochs": 5,
+    "flow_epochs": 10,
+    "denoise_hidden": 128,
+    "flow_hidden": 64,
+    "denoise_batch": 256,
+    "flow_batch": 64,
+    "denoise_lr": 0.0001,
+    "flow_lr": 0.01,
+    "constant_lr": 0.001,
+    "sigma": 0.5,
+    "p_uncond": 0.1,
+    "guidance": 5.0,
+    "time_steps": 50,
+    "class_steps": 300,
+    "train_limit": null,
+    "eval_limit": 1000,
+    "device": "mps",
+    "threads": 4,
+    "log_every": 50
+  },
+  "device": "mps",
+  "torch": "2.12.0",
+  "python": "3.10.11",
+  "train_count": 60000,
+  "train_split": "MNIST train",
+  "evaluation_split": "MNIST test",
+  "parameters": 7891073,
+  "scheduler": "none",
+  "initial_learning_rate": 0.0001,
+  "epochs": [
+    {
+      "epoch": 1,
+      "mean_training_mse": 0.07319042171239853,
+      "learning_rate": 0.0001,
+      "seconds": 191.05130758401356,
+      "training_examples": 60000,
+      "output_variance_across_samples": 0.0002846058632712811,
+      "mse_to_training_centroid": 0.00043275600182823837
+    },
+    {
+      "epoch": 2,
+      "mean_training_mse": 0.06753276607195537,
+      "learning_rate": 0.0001,
+      "seconds": 176.73433070801548,
+      "training_examples": 60000
+    },
+    {
+      "epoch": 3,
+      "mean_training_mse": 0.06744451811313629,
+      "learning_rate": 0.0001,
+      "seconds": 175.5794645829883,
+      "training_examples": 60000
+    },
+    {
+      "epoch": 4,
+      "mean_training_mse": 0.06742313894033432,
+      "learning_rate": 0.0001,
+      "seconds": 171.94777895801235,
+      "training_examples": 60000
+    },
+    {
+      "epoch": 5,
+      "mean_training_mse": 0.06737636844317119,
+      "learning_rate": 0.0001,
+      "seconds": 172.41462295799283,
+      "training_examples": 60000,
+      "output_variance_across_samples": 4.5919703552499413e-05,
+      "mse_to_training_centroid": 7.065056706778705e-05
+    }
+  ],
+  "artifacts": [
+    "pure_noise_centroid_epoch_1.png",
+    "pure_noise_centroid_epoch_5.png",
+    "pure_noise_epoch_1.png",
+    "pure_noise_epoch_5.png",
+    "pure_noise_loss.csv",
+    "pure_noise_loss.png",
+    "pure_noise_metrics.json"
+  ],
+  "complete_assignment_run": true
+}

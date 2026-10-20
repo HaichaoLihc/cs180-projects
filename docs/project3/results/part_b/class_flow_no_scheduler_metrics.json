@@ -1,0 +1,120 @@
+{
+  "group": "class_flow_no_scheduler",
+  "status": "completed",
+  "mode": "full",
+  "config": {
+    "mode": "full",
+    "seed": 180,
+    "denoise_epochs": 5,
+    "flow_epochs": 10,
+    "denoise_hidden": 128,
+    "flow_hidden": 64,
+    "denoise_batch": 256,
+    "flow_batch": 64,
+    "denoise_lr": 0.0001,
+    "flow_lr": 0.01,
+    "constant_lr": 0.001,
+    "sigma": 0.5,
+    "p_uncond": 0.1,
+    "guidance": 5.0,
+    "time_steps": 50,
+    "class_steps": 300,
+    "train_limit": null,
+    "eval_limit": 1000,
+    "device": "mps",
+    "threads": 4,
+    "log_every": 50
+  },
+  "device": "mps",
+  "torch": "2.12.0",
+  "python": "3.10.11",
+  "train_count": 60000,
+  "train_split": "MNIST train",
+  "evaluation_split": "MNIST test",
+  "parameters": 2019201,
+  "scheduler": "none",
+  "initial_learning_rate": 0.001,
+  "epochs": [
+    {
+      "epoch": 1,
+      "mean_training_mse": 0.1380733069896698,
+      "learning_rate": 0.001,
+      "seconds": 107.24450304202037,
+      "training_examples": 60000
+    },
+    {
+      "epoch": 2,
+      "mean_training_mse": 0.10339884817997615,
+      "learning_rate": 0.001,
+      "seconds": 108.14512754199677,
+      "training_examples": 60000
+    },
+    {
+      "epoch": 3,
+      "mean_training_mse": 0.09655250627199809,
+      "learning_rate": 0.001,
+      "seconds": 106.9647382920084,
+      "training_examples": 60000
+    },
+    {
+      "epoch": 4,
+      "mean_training_mse": 0.09287864309549332,
+      "learning_rate": 0.001,
+      "seconds": 107.09504474999267,
+      "training_examples": 60000
+    },
+    {
+      "epoch": 5,
+      "mean_training_mse": 0.090234616959095,
+      "learning_rate": 0.001,
+      "seconds": 109.50595545800752,
+      "training_examples": 60000
+    },
+    {
+      "epoch": 6,
+      "mean_training_mse": 0.08885857357581456,
+      "learning_rate": 0.001,
+      "seconds": 106.8370675839833,
+      "training_examples": 60000
+    },
+    {
+      "epoch": 7,
+      "mean_training_mse": 0.08709852341413497,
+      "learning_rate": 0.001,
+      "seconds": 98.28032524997252,
+      "training_examples": 60000
+    },
+    {
+      "epoch": 8,
+      "mean_training_mse": 0.08643459339936574,
+      "learning_rate": 0.001,
+      "seconds": 32.73659575000056,
+      "training_examples": 60000
+    },
+    {
+      "epoch": 9,
+      "mean_training_mse": 0.08528201119502385,
+      "learning_rate": 0.001,
+      "seconds": 32.763479208020726,
+      "training_examples": 60000
+    },
+    {
+      "epoch": 10,
+      "mean_training_mse": 0.08458828516801198,
+      "learning_rate": 0.001,
+      "seconds": 32.7036309580144,
+      "training_examples": 60000
+    }
+  ],
+  "artifacts": [
+    "class_flow_no_scheduler_epoch_1.png",
+    "class_flow_no_scheduler_epoch_10.png",
+    "class_flow_no_scheduler_epoch_5.png",
+    "class_flow_no_scheduler_loss.csv",
+    "class_flow_no_scheduler_loss.png",
+    "class_flow_no_scheduler_metrics.json",
+    "class_flow_no_scheduler_samples.pt"
+  ],
+  "complete_assignment_run": true,
+  "compensation": "Fresh independent model; constant Adam learning rate 0.001 instead of the scheduled initial rate 0.01. The lower constant rate limits late-training updates. Performance must be judged from the saved generated digits, not assumed."
+}

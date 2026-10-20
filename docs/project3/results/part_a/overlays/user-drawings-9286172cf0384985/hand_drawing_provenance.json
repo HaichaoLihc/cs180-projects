@@ -1,0 +1,54 @@
+{
+  "sailboat": {
+    "kind": "user_hand_drawing",
+    "supplied_on": "2026-10-19",
+    "original": "assets/hand_drawings/sailboat_original.png",
+    "original_sha256": "fb28d08dd8d28ac30626c4fbeb76aefef3c7e108d73e602e507bbe196471ea71",
+    "original_dimensions": [
+      1330,
+      1030
+    ],
+    "prepared": "assets/hand_drawing_sailboat.png",
+    "prepared_sha256": "2d119072948a8f324655e36fe91e3a4734ab4623d8ddea4de02897e40d6660d7",
+    "prepared_dimensions": [
+      1330,
+      1330
+    ],
+    "offset_xy": [
+      0,
+      150
+    ],
+    "padding_rgb": [
+      242,
+      242,
+      242
+    ],
+    "processing": "RGB conversion and constant square padding; no source retouching"
+  },
+  "teapot": {
+    "kind": "user_hand_drawing",
+    "supplied_on": "2026-10-19",
+    "original": "assets/hand_drawings/teapot_original.png",
+    "original_sha256": "6c2cff7194a8950dd708899e3c1779a3a7be840e18faf2a4789dce2e5af87215",
+    "original_dimensions": [
+      936,
+      626
+    ],
+    "prepared": "assets/hand_drawing_teapot.png",
+    "prepared_sha256": "af5df2e309e29c1eae2d35bfa2778bc2069c1b5a95fb05f6f09244dca822a11a",
+    "prepared_dimensions": [
+      936,
+      936
+    ],
+    "offset_xy": [
+      0,
+      155
+    ],
+    "padding_rgb": [
+      242,
+      242,
+      242
+    ],
+    "processing": "RGB conversion and constant square padding; no source retouching"
+  }
+}

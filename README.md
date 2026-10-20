@@ -9,8 +9,10 @@ Haichao Li's project reports for UC Berkeley CS180, Fall 2026.
 - [Project 1 - Images of the Russian Empire](https://haichaolihc.github.io/cs180-projects/project1/)
 - [Project 2 - Fun with Filters and Frequencies](https://haichaolihc.github.io/cs180-projects/project2/)
 
+- [Project 3 - Flow Matching](https://haichaolihc.github.io/cs180-projects/project3/)
+
 GitHub Pages serves the static `docs/` directory on `main`.
-Project reports live in `docs/project0/`, `docs/project1/`, and `docs/project2/`.
+Project reports live in `docs/project0/`, `docs/project1/`, `docs/project2/`, and `docs/project3/`.
 The root page is the course portfolio.
 
 This public repository contains webpages, measured offsets, and result images.
@@ -27,3 +29,9 @@ published website links now use the paths listed above.
 The Project 2 webpage and optimized image assets are in `docs/project2/`.
 Its Python code, input images, and final PDF remain in the neighboring `proj 2/` directory.
 Refresh report images from there with `python3 code/utils.py --export`.
+
+## Project 3
+
+The Project 3 webpage, source images, result figures, and experiment records are in
+`docs/project3/`. Code, notebooks, model weights, and the submission PDF remain in
+the neighboring `proj3/` directory. The website contains both Parts A and B.

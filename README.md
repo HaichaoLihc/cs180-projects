@@ -10,7 +10,7 @@ Haichao Li's project reports for UC Berkeley CS180, Fall 2026.
 - [Project 2 - Fun with Filters and Frequencies](https://haichaolihc.github.io/cs180-projects/project2/)
 
 - [Project 3 - Flow Matching](https://haichaolihc.github.io/cs180-projects/project3/)
-- [Project 4A - Image Warping and Mosaicing](https://haichaolihc.github.io/cs180-projects/project4/)
+- [Project 4 - Image Warping and Automatic Mosaicing](https://haichaolihc.github.io/cs180-projects/project4/)
 
 GitHub Pages serves the static `docs/` directory on `main`.
 Project reports live in `docs/project0/`, `docs/project1/`, `docs/project2/`, `docs/project3/`, and `docs/project4/`.
@@ -37,6 +37,6 @@ The Project 3 webpage, source images, result figures, and experiment records are
 `docs/project3/`. Code, notebooks, model weights, and the submission PDF remain in
 the neighboring `proj3/` directory. The website contains both Parts A and B.
 
-## Project 4A
+## Project 4 A+B
 
 The webpage and report images are in `docs/project4/`. The implementation, selected input photographs, submission ZIP and PDF remain in the neighboring `proj4/` directory. Only the webpage and its displayed figures are published here.
